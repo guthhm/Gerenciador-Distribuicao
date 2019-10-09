@@ -13,6 +13,7 @@ de uma empresa fictícia e exibir esta disbribuição de forma gráfica no termi
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define version 0.01
 #define YES 1
@@ -30,13 +31,13 @@ void TablePrinter (char matriz_dist[8][8]) {
         }    
         printf("\n");    
     }
-
+    printf("\n");
 }
 
 int main (void) {
 
-    int x = 0, y = 0, k = 0;
-    char matriz_dist[8][8] = {0}, linha[6], ocupante, file_list[10][20] = {0}, user_input[10] = {0};
+    int x = 0, y = 0, k = 0, valor =0;
+    char matriz_dist[8][8] = {0}, linha[6], ocupante, file_list[10][20] = {0}, user_input[10] = {0}, file_to_open[30];
     FILE *primary_dist_file;
     FILE *dist_file;
 
@@ -71,9 +72,41 @@ int main (void) {
     printf("\n\n");
 
     printf("Por favor, digite o numero ou nome correspondente a distribuicao desejada:\n>");
-    scanf("%s", &user_input);
+    do
+    {
+        scanf("%s", &user_input);
 
-    dist_file = fopen("../dist1.txt", "r");
+        if (strlen(user_input) > 1)
+        {
+            for (int i = 0; i < k; i++)
+            {
+                if (strstr(user_input, file_list[i]) != NULL) {
+                    valor = i+1;
+                    break;
+                }
+            }
+        
+        } else
+        {
+            if (user_input[0] > '0' && user_input[0] <= '9')
+            {
+                printf("Valor valido\n");
+                valor = user_input[0] - '0';
+            }else
+            {
+                printf("O valor digitado e invalido, por favor insira um valor valido\n>");
+                valor = NO;
+            }
+        }
+    } while (valor == 0);
+
+    printf("\n Valor: %d\n\n", valor);
+
+    valor = valor - 1;
+
+    sprintf(file_to_open, "../%s", file_list[valor]);
+
+    dist_file = fopen(file_to_open, "r");
 
     if (dist_file == NULL)
     {
@@ -89,6 +122,8 @@ int main (void) {
     }
 
     TablePrinter(matriz_dist);
+
+    
 
     return 0;
 }
