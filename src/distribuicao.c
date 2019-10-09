@@ -20,13 +20,11 @@ de uma empresa fictícia e exibir esta disbribuição de forma gráfica no termi
 
 void TablePrinter (char matriz_dist[8][8]) {
 
-    //char matriz_dist[8][8] = {0};
-
     printf("   0  1  2  3  4  5  6  7\n");
     for (int i = 0; i < 8; i++) {
         printf("%d ", i);
         for (int j = 0; j < 8; j++) {
-            if (matriz_dist[i][j] != 'V' || matriz_dist[i][j] != '*')            
+            if (matriz_dist[i][j] != 'V' && matriz_dist[i][j] != '*')            
                 matriz_dist[i][j] = '.';
             printf(" %c ", matriz_dist[i][j]);
         }    
@@ -37,9 +35,43 @@ void TablePrinter (char matriz_dist[8][8]) {
 
 int main (void) {
 
-    int x = 0, y = 0;
-    char matriz_dist[8][8] = {0}, linha[6], ocupante;
+    int x = 0, y = 0, k = 0;
+    char matriz_dist[8][8] = {0}, linha[6], ocupante, file_list[10][20] = {0}, user_input[10] = {0};
+    FILE *primary_dist_file;
     FILE *dist_file;
+
+    primary_dist_file = fopen("../distribuicao.txt", "r");
+
+    if (primary_dist_file == NULL)
+    {
+        printf("Erro ao abrir o ficheiro, verifique se o ficheiro existe e tente novamente.");
+        exit(1);
+    }
+
+    while (fgets(file_list[k], 10, primary_dist_file) != NULL)
+    {
+        printf("%s\t k:%d\n", file_list[k], k);
+        if (fscanf(primary_dist_file, "%s") != "\n")
+        {
+            k++;
+        }
+
+    }
+
+    fclose(primary_dist_file);
+
+    printf("\n\tBem-vindo ao gerenciador de distribuicao versao %g. \n\n", version);
+    printf("Estes sao os ficheiros de distribuicao disponiveis:\n\n\n");
+    
+    for (int i = 0; i < k; i++)
+    {
+        printf("%d: %s\n", i+1, file_list[i]);
+    }
+
+    printf("\n\n");
+
+    printf("Por favor, digite o numero ou nome correspondente a distribuicao desejada:\n>");
+    scanf("%s", &user_input);
 
     dist_file = fopen("../dist1.txt", "r");
 
@@ -52,27 +84,11 @@ int main (void) {
     while (fgets(linha, 6, dist_file) != NULL)
     {
         sscanf(linha, "%d %d %c", &x, &y, &ocupante);
-        printf("%d - x    %d - y    %c - ocupante\n", x, y, ocupante);
+        //printf("%d - x    %d - y    %c - ocupante\n", x, y, ocupante);
         matriz_dist[x][y] = ocupante;
     }
-    
-    
 
-    printf("Bem-vindo ao gerenciador de distribuicao versao %g. \n\n", version);
-
-    //TablePrinter(matriz_dist);
-    
-    printf("   0  1  2  3  4  5  6  7\n");
-    for (int i = 0; i < 8; i++) {
-        printf("%d ", i);
-        for (int j = 0; j < 8; j++) {
-            if (matriz_dist[i][j] != 'V' && matriz_dist[i][j] != '*')            
-                matriz_dist[i][j] = '.';
-            printf(" %c ", matriz_dist[i][j]);
-        }    
-        printf("\n");    
-    }
-
+    TablePrinter(matriz_dist);
 
     return 0;
 }
