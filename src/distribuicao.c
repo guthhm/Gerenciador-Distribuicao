@@ -8,13 +8,13 @@ Ano: 2019;
 
 Descrição: Este programa consiste em organizar de acordo com regras predefinidas a distribuição dos funcionários e aeronaves
 de uma empresa fictícia e exibir esta disbribuição de forma gráfica no terminal;
-
 ======================================================================================================================*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+/*---------- Definições gerais ----------*/
 #define version 0.01
 #define YES 1
 #define NO 0
@@ -81,7 +81,7 @@ int main (void) {
             for (int i = 0; i < k; i++)
             {
                 if (strstr(user_input, file_list[i]) != NULL) {
-                    valor = i+1;
+                    valor = i+1; // Faz com que o valor nunca seja 0 para que possa sair do loop
                     break;
                 }
             }
@@ -91,7 +91,7 @@ int main (void) {
             if (user_input[0] > '0' && user_input[0] <= '9')
             {
                 printf("Valor valido\n");
-                valor = user_input[0] - '0';
+                valor = user_input[0] - '0'; // Converte o valor em ASCII para o equivalente em integer
             }else
             {
                 printf("O valor digitado e invalido, por favor insira um valor valido\n>");
@@ -104,7 +104,7 @@ int main (void) {
 
     valor = valor - 1;
 
-    sprintf(file_to_open, "../%s", file_list[valor]);
+    sprintf(file_to_open, "../%s", file_list[valor]);  // Cria o path para que o arquivo desejado seja aberto
 
     dist_file = fopen(file_to_open, "r");
 
@@ -116,14 +116,19 @@ int main (void) {
 
     while (fgets(linha, 6, dist_file) != NULL)
     {
-        sscanf(linha, "%d %d %c", &x, &y, &ocupante);
+        if (sscanf(linha, "%d") <= 3)
+        {
+            printf("%s", linha);
+        }
+        
+        //sscanf(linha, "%d %d %c", &x, &y, &ocupante);
         //printf("%d - x    %d - y    %c - ocupante\n", x, y, ocupante);
         matriz_dist[x][y] = ocupante;
     }
 
-    TablePrinter(matriz_dist);
+    fclose(dist_file);
 
-    
+    TablePrinter(matriz_dist);
 
     return 0;
 }
