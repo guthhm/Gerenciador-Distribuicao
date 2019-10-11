@@ -51,7 +51,7 @@ int main (void) {
 
     while (fgets(file_list[k], 10, primary_dist_file) != NULL)
     {
-        printf("%s\t k:%d\n", file_list[k], k);
+        printf("Lendo o arquivo...");
         if (fscanf(primary_dist_file, "%s") != "\n")
         {
             k++;
@@ -100,7 +100,7 @@ int main (void) {
         }
     } while (valor == 0);
 
-    printf("\n Valor: %d\n\n", valor);
+    //printf("\n Valor: %d\n\n", valor);
 
     valor = valor - 1;
 
@@ -116,15 +116,17 @@ int main (void) {
 
     while (fgets(linha, 6, dist_file) != NULL)
     {
-        if (sscanf(linha, "%d") <= 3)
+        if (linha[0] <= '3')
         {
             printf("%s", linha);
         }
         
-        //sscanf(linha, "%d %d %c", &x, &y, &ocupante);
+        sscanf(linha, "%d %d %c", &x, &y, &ocupante);
         //printf("%d - x    %d - y    %c - ocupante\n", x, y, ocupante);
         matriz_dist[x][y] = ocupante;
     }
+
+    printf("\n\n");
 
     fclose(dist_file);
 
