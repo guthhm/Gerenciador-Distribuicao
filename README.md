@@ -67,11 +67,11 @@ Afim de facilitar a compreensão do usuário do status com o qual o programa com
 
 Ao final de cada sessão, o software adiciona ao final do arquivo `resultados.txt` um código de acordo com o estado que completou o que lhe é designado. Cada código possui um significado próprio assim como cada dígito.
 
-Portanto, temos a seguinte estrutura (onde 'A', 'B' e 'C' são números $ n \in\mathbb N $):
+Portanto, temos a seguinte estrutura (onde 'A', 'B' e 'C' são números n∈N):
 
-X | X | X
+A | B | C
 |-|-|-|
-|Refere-se ao fato de haver erro ou não|Refere-se ao ponto onde uma possível falha ocorra| Refere-se ao tipo de erro encotrado neste ponto|
+|Refere-se à ocorrência ou não de falhas e em qual ponto. <br> 1 - OK; <br> 2 - Referente ao arquivo raíz de distribuições; <br> 3 - Referente ao arquivo de distribuição;|Refere-se principal objeto onde houve o erro. <br>0 - Referente à estrutura do arquivo; <br>1 - Referente aos valores apontados; <br> 2 - Relativo às regras operacionais;| Refere-se ao tipo de estado encotrado neste ponto. <br> Cada valor possui significado próprio de acordo com o objeto e local ao qual o status se refere.|
 
 Os códigos e seus significados estão dispostos a seguir:
 
