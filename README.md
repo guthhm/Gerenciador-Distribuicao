@@ -40,3 +40,35 @@ Cada um dos arquivos incluídos contém uma distribuição distinta que tem form
 2 4 *
 3 0 *
 ```
+
+## Arquivo contendo os resultados
+
+De acordo com a exigência do projeto, o programa produz ao final um arquivo no formato `.txt` com o nome `resultados.txt`. Este contém informações relevantes sobre a execução do software e validação das distribuições indicadas.
+
+Para que seja de fácil visualização do utilizador, o arquivo gerado automaticamente possui clara estrutura e diagramação como apontado a seguir.
+
+```
+ID da sessão | Arquivo utilizado | Status de encerramento | Nº de funcionários | Nº de aeronaves
+
+```
+De acordo com a execução e validação realizadas, podem haver 2 cenários, um no qual não hajam quaisquer erros e o programa adiciona somente a linha representada acima com o respectivo código de status, ou outro no qual exista um erro o qual será indicado da seguinte forma:
+
+```
+ID da sessão | Arquivo utilizado | Status de encerramento | Nº de funcionários | Nº de aeronaves
+Ocupante (X | Y) - Ocupante (X | Y)
+```
+> Nota: As barras verticais ('|') não aparecem no arquivo e tem somente função ilustrativa neste exemplo.
+
+Sendo assim, estarão abrangidos os pontos iniciais de possíveis falhas e, com o sistema de codificação de estado utilizado, existe a possibilidade de aumentar a abrangência posteriormente. Este será tratado com maior clareza no próximo tópico.
+
+## Códigos de Status
+
+Afim de facilitar a compreensão do usuário do status com o qual o programa completou sua tarefa e também tornar mais claro os processos que desencadearam os mesmos, é utilizado uma tabela - inspirada pelo HTTP Response Status Code - com códigos de 3 dígitos relativos ao estado atual ou final do programa. 
+
+Ao final de cada sessão, o software adiciona ao final do arquivo `resultados.txt` um código de acordo com o estado que completou o que lhe é designado. Cada código possui um significado próprio assim como cada dígito.
+
+Portanto, temos a seguinte estrutura (onde 'X' é um número $n \in\mathbb N$):
+
+X | X | X
+|-|-|-|
+|Refere-se ao fato de haver erro ou não|Refere-se ao ponto onde uma possível falha ocorra| Refere-se ao tipo de erro encotrado neste ponto|
