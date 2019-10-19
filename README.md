@@ -67,8 +67,35 @@ Afim de facilitar a compreensão do usuário do status com o qual o programa com
 
 Ao final de cada sessão, o software adiciona ao final do arquivo `resultados.txt` um código de acordo com o estado que completou o que lhe é designado. Cada código possui um significado próprio assim como cada dígito.
 
-Portanto, temos a seguinte estrutura (onde 'X' é um número $n \in\mathbb N$):
+Portanto, temos a seguinte estrutura (onde 'A', 'B' e 'C' são números $ n \in\mathbb N $):
 
 X | X | X
 |-|-|-|
 |Refere-se ao fato de haver erro ou não|Refere-se ao ponto onde uma possível falha ocorra| Refere-se ao tipo de erro encotrado neste ponto|
+
+Os códigos e seus significados estão dispostos a seguir:
+
+```
+100 - Sucesso
+
+----
+
+201 - Erro ao abrir o arquivo raíz de distribuições (distribuicao.txt)
+
+211 - Formato de arquivo indicado por distribuicao.txt é inválido
+212 - Caracteres contidos no arquivo indicado por distribuicao.txt é inválido
+
+----
+
+301 - Erro ao abrir o arquivo de distribuição
+302 - Coordenada 'X' inválida
+303 - Coordenada 'Y' inválida
+304 - Ocupante da posição inválido
+
+311 - Funcionário sem aeronave
+312 - Aeronave sem funcionário
+313 - Funcionário adjacente a outro
+
+321 - Há mais funcionários que aeronaves
+322 - Há mais aeronaves que funcionários
+```
