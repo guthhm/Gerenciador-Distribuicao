@@ -75,27 +75,19 @@ A | B | C
 
 Os códigos e seus significados estão dispostos a seguir:
 
-```
-100 - Sucesso
+
+### 100 - Sucesso
 
 ----
 
-201 - Erro ao abrir o arquivo raíz de distribuições (distribuicao.txt)
+### 201 - Erro ao abrir o arquivo raíz de distribuições (distribuicao.txt)
 
-211 - Formato de arquivo indicado por distribuicao.txt é inválido
-212 - Caracteres contidos no arquivo indicado por distribuicao.txt é inválido
+### 211 - Formato de arquivo indicado por distribuicao.txt é inválido <br>212 - Caracteres contidos no arquivo indicado por distribuicao.txt é inválido
 
 ----
 
-301 - Erro ao abrir o arquivo de distribuição
-302 - Coordenada 'X' inválida
-303 - Coordenada 'Y' inválida
-304 - Ocupante da posição inválido
+### 301 - Erro ao abrir o arquivo de distribuição <br>302 - Coordenada 'X' inválida <br>303 - Coordenada 'Y' inválida<br> 304 - Ocupante da posição inválido
 
-311 - Funcionário sem aeronave
-312 - Aeronave sem funcionário
-313 - Funcionário adjacente a outro
+### 311 - Funcionário sem aeronave <br>312 - Aeronave sem funcionário <br>313 - Funcionário adjacente a outro
 
-321 - Há mais funcionários que aeronaves
-322 - Há mais aeronaves que funcionários
-```
+### 321 - Há mais funcionários que aeronaves <br>322 - Há mais aeronaves que funcionários
