@@ -23,7 +23,7 @@ de uma empresa fictícia e exibir esta distribuição de forma gráfica no termi
 #define WRITE_INFO_LINE 0
 #define APPEND 1
 
-void ResultWriter (int open_mode, int status_code, char file_to_open[23]) {
+void ResultWriter (int open_mode, int status_code[5], char file_to_open[23], int func, int aero) {
 
     char session_ID[7];
     FILE *result_file;
@@ -41,20 +41,35 @@ void ResultWriter (int open_mode, int status_code, char file_to_open[23]) {
         }
 
         fprintf(result_file, "ID: %s ", session_ID);
-        fprintf(result_file, "%s %d/%d/%d %d:%d\n", file_to_open, t->tm_mday, t->tm_mon+1, t->tm_year+1900, t->tm_hour, t->tm_min);
+        fprintf(result_file, "%s %d/%d/%d %d:%d Funcionarios: %d Aeronaves: %d\n", file_to_open, t->tm_mday, t->tm_mon+1, t->tm_year+1900, t->tm_hour, t->tm_min, func, aero);
 
-        switch (status_code)
+        for (int i = 0; i < 6; i++)
         {
-        case 201:
-            fprintf(result_file, "Status %d - O ficheiro distribuicao.txt nao foi encontrado ou aberto corretamente.\n", status_code);
-            break;
+            switch (status_code[i])
+            {
+            case 201:
+                fprintf(result_file, "Status %d - O ficheiro distribuicao.txt nao foi encontrado ou aberto corretamente.\n", status_code[i]);
+                break;
 
-        case 221:
-            fprintf(result_file, "Status %d - Existem ficheiros inválidos apontados pelo ficheiro distribuicao.txt.\n", status_code);
-            break;
-        
-        default:
-            break;
+            case 221:
+                fprintf(result_file, "Status %d - Existem ficheiros inválidos apontados pelo ficheiro distribuicao.txt.\n", status_code[i]);
+                break;
+
+            case 302:
+                fprintf(result_file, "Status %d - A coordenada 'X' indicada pelo ficheiro de distribuição escolhido é inválida.\n", status_code[i]);
+                break;
+
+            case 303:
+                fprintf(result_file, "Status %d - A coordenada 'Y' indicada pelo ficheiro de distribuição escolhido é inválida.\n", status_code[i]);
+                break;
+
+            case 304:
+                fprintf(result_file, "Status %d - O ocupante em uma das posições indicadas não é válido.\n", status_code[i]);
+                break;
+
+            default:
+                break;
+            }
         }
         
     }
@@ -83,7 +98,7 @@ void TablePrinter (char matriz_dist[7][7]) {
 
 int main (void) {
 
-    int x = 0, y = 0, k = 0, valor = 0, error_flag = 0, line_count = 0, status_code = 0, open_mode;
+    int x = 0, y = 0, k = 0, funcionario = 0, aeronave = 0, valor = 0, status_count = 0, error_flag = 0, line_count = 0, status_code[5], open_mode;
     char matriz_dist[7][7] = {0}, linha[6], ocupante, file_list[20][20] = {0}, user_input[20] = {0}, file_to_open[23];
     FILE *primary_dist_file, *dist_file;
 
@@ -94,7 +109,7 @@ int main (void) {
     if (primary_dist_file == NULL)
     {
         printf("Erro ao abrir o ficheiro, verifique se o ficheiro existe e tente novamente.");
-        ResultWriter(WRITE_INFO_LINE, 201, "NULL");
+        ResultWriter(WRITE_INFO_LINE, 201, "NULL", 0, 0);
         exit(1);
     } else
     {
@@ -109,7 +124,8 @@ int main (void) {
                 k++;
             } else
             {
-                status_code = 221;
+                status_code[status_count] = 221;
+                status_count++;
             }
             
         }
@@ -165,9 +181,6 @@ int main (void) {
         strcpy(file_to_open, "../");
         strcat(file_to_open, file_list[valor]);
 
-        open_mode = WRITE_INFO_LINE;
-        ResultWriter(open_mode, status_code, file_to_open);
-
         //printf("\nFile to open: %s", file_to_open); /* Valores impressos para somente para verificação */
         //printf("\n%sTeste", file_list[valor]);
 
@@ -182,36 +195,42 @@ int main (void) {
         printf("\n");
         error_flag = 0;
 
-        while (fgets(linha, 6, dist_file) != NULL)
+        while (fgets(linha, sizeof linha, dist_file) != NULL)
         {
             if (linha[0] <= '3')
-            {
                 printf("%s", linha);
-            }
         
             sscanf(linha, "%d %d %c", &x, &y, &ocupante);
             //printf("%d - x    %d - y    %c - ocupante\n", x, y, ocupante);
 
-            if (x > 7 || x < 0 || y > 7 || y < 0)
+            if (x > 7 || x < 0)
             {
                 error_flag = 1;
-                if (ocupante != '*' && ocupante != 'V')
-                {
-                    error_flag = 2;
-                    break;
-                }
-                break;
-                
+                status_code[status_count] = 302;
+                status_count++;
+                break;                
+            } else if (y > 7 || y < 0)
+            {
+                error_flag = 1;
+                status_code[status_count] = 303;
+                status_count++;
+                break;    
             } else
             {
+                if (ocupante != '*' && ocupante != 'V')
+                    status_code[status_count] = 304;
+                    status_count++;
+                if (ocupante == '*')
+                    funcionario++;
+                if (ocupante == 'V')
+                    aeronave++;
+
                 matriz_dist[x][y] = ocupante;
             }
 
             line_count++;
             
         }
-
-        printf("\n\n");
 
         switch (error_flag)
         {
@@ -229,6 +248,8 @@ int main (void) {
 
         line_count = 0;
         fclose(dist_file);
+        open_mode = WRITE_INFO_LINE;
+        ResultWriter(open_mode, status_code, file_to_open, funcionario, aeronave);
 
     } while (error_flag != NO);
 
