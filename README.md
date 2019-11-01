@@ -51,13 +51,15 @@ Para que seja de fácil visualização do utilizador, o arquivo gerado automatic
 ID da sessão | Arquivo utilizado | Status de encerramento | Nº de funcionários | Nº de aeronaves
 
 ```
-De acordo com a execução e validação realizadas, podem haver 2 cenários, um no qual não hajam quaisquer erros e o programa adiciona somente a linha representada acima com o respectivo código de status, ou outro no qual exista um erro o qual será indicado da seguinte forma:
+> Onde: <br> ID da sessão = Nº único e aleatório de identificação; <br> Arquivo utilizado = Path do arquivo de distribuição aberto; <br> Status de encerramento = Indica 'ERRO' ou 'OK' <br> Nº de funcionários e Nº de Aeronaves = Quantidades dos respectivos ocupantes indicados no arquivo de distribuição.
+
+De acordo com a execução e validação realizadas, podem haver 2 cenários, um no qual não hajam quaisquer erros e o programa adiciona somente a linha representada acima com o respectivo código de status, ou outro no qual exista um erro que será indicado da seguinte forma:
 
 ```
 ID da sessão | Arquivo utilizado | Status de encerramento | Nº de funcionários | Nº de aeronaves
-Ocupante (X | Y) - Ocupante (X | Y)
+Status: Nº de Status | Descrição | Ocupante (X | Y) - Ocupante (X | Y)
 ```
-> Nota: As barras verticais ('|') não aparecem no arquivo e tem somente função ilustrativa neste exemplo.
+> Nota: As barras verticais ('|') não aparecem no arquivo e tem somente função ilustrativa nestes exemplos.
 
 Sendo assim, estarão abrangidos os pontos iniciais de possíveis falhas e, com o sistema de codificação de estado utilizado, existe a possibilidade de aumentar a abrangência posteriormente. Este será tratado com maior clareza no próximo tópico.
 
@@ -73,7 +75,7 @@ A | B | C
 |-|-|-|
 |Refere-se à ocorrência ou não de falhas e em qual ponto. <br> 1 - OK; <br> 2 - Referente ao arquivo raíz de distribuições; <br> 3 - Referente ao arquivo de distribuição;|Refere-se principal objeto onde houve o erro. <br>0 - Referente à estrutura do arquivo; <br>1 - Referente aos valores apontados; <br> 2 - Relativo às regras operacionais;| Refere-se ao tipo de estado encotrado neste ponto. <br> Cada valor possui significado próprio de acordo com o objeto e local ao qual o status se refere.|
 
-Os códigos e seus significados estão dispostos a seguir:
+Os códigos e suas descrições estão dispostos a seguir:
 
 
 ### 100 - Sucesso
@@ -82,7 +84,7 @@ Os códigos e seus significados estão dispostos a seguir:
 
 ### 201 - Erro ao abrir o arquivo raíz de distribuições (distribuicao.txt)
 
-### 211 - Formato de arquivo indicado por distribuicao.txt é inválido <br>212 - Caracteres contidos no arquivo indicado por distribuicao.txt é inválido
+### 211 - Formato de um dos arquivos indicado por distribuicao.txt é inválido <br>212 - Caracteres contidos em um dos arquivos indicados por distribuicao.txt são inválidos
 
 ----
 
@@ -90,4 +92,4 @@ Os códigos e seus significados estão dispostos a seguir:
 
 ### 311 - Funcionário sem aeronave <br>312 - Aeronave sem funcionário <br>313 - Funcionário adjacente a outro
 
-### 321 - Há mais funcionários que aeronaves <br>322 - Há mais aeronaves que funcionários
+### 321 - Há mais funcionários que aeronaves 
