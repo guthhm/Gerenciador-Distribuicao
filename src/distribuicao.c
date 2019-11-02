@@ -92,6 +92,10 @@ void ResultWriter (int open_mode, int status_code[5], char file_to_open[23], int
                 fprintf(result_file, "\tStatus %d - O número de funcionários e aeronaves não é o mesmo.\n", status_code[i]);
                 break;
 
+            case 331:
+                fprintf(result_file, "\tStatus %d - Pelo menos uma aeronave não tem funcionario atribuido.\n", status_code[i]);
+                break;
+
             default:
                 break;
             }
@@ -113,37 +117,77 @@ void ResultWriter (int open_mode, int status_code[5], char file_to_open[23], int
 }
 
 void DistValidator (int *validacao[7][7], char dist[7][7], int *erros[5], int *erro_count) {
+
+	int num_aeronaves = 0;
+	int num_funcionarios = 0;
     for (int i = 0; i < 8; i++)
     {
         for (int j = 0; j < 8; j++)
         {
             if (dist[i][j] == 'V')
             {
-                if (dist[i-1][j] == '*' || dist[i][j-1] == '*' || dist[i][j+1] == '*' || dist[i+1][j] == '*')
+            	num_aeronaves++;
+            	
+                /*if (dist[i-1][j] == '*' || dist[i][j-1] == '*' || dist[i][j+1] == '*' || dist[i+1][j] == '*')
                 {
                     *validacao[i][j] == OK;
-                } else
+                }
+                else
                 {
                     *validacao[i][j] = SOZINHO;
                     *erros[*erro_count] = 312;
                     *erro_count++;
                     printf("\n%d %d\n", i, j);
+                }*/
+                if(i==0 && j==0)
+                	if(dist[i][j+1] == '*' || dist[i+1][j] == '*'){*validacao[i][j] == OK; break;}
+                else if(i==7 && j == 0)
+                	if(dist[i][j+1] == '*' || dist[i-1][j] == '*'){*validacao[i][j] == OK; break;}
+                else if(i==0 && j==7)
+                	if(dist[i][j-1] == '*' || dist[i+1][j] == '*'){*validacao[i][j] == OK; break;}
+                else if(i==7 && j==7)
+                	if(dist[i][j-1] == '*' || dist[i-1][j] == '*'){*validacao[i][j] == OK; break;}
+                else if(i>0 && j==0)
+                	if(dist[i][j+1] == '*' || dist[i-1][j] == '*' || dist[i+1][j] == '*'){*validacao[i][j] == OK; break;}
+                else if(i>0 && j==7)
+                	if(dist[i][j-1] == '*' || dist[i-1][j] == '*' || dist[i+1][j] == '*'){*validacao[i][j] == OK; break;}
+                else if(i==0 && j>0)
+                	if(dist[i][j+1] == '*' || dist[i][j-1] == '*' || dist[i+1][j] == '*'){*validacao[i][j] == OK; break;}
+                else if (i==7 && j>0)
+                	if(dist[i][j-1] == '*' || dist[i][j+1] == '*' || dist[i+1][j] == '*'){*validacao[i][j] == OK; break;}
+                else
+                {
+                	if(dist[i-1][j] == '*' || dist[i+1][j] == '*' || dist[i][j-1] == '*' || dist[i][j+1] == '*'){*validacao[i][j] == OK; break;}
+
+                	else
+                	{
+                		*validacao[i][j] = SOZINHO;
+	                    *erros[*erro_count] = 331;
+	                    *erro_count++;
+	                    printf("\n%d %d\n", i, j);
+                	}
+                		
                 }
                 
                 
             } else if (dist[i][j] == '*')
             {
-                /* code */
+            	num_funcionarios++;
+                
             } else
             {
                 *validacao[i][j] = VAZIO;
-            }
-            
+            }   
             
             
             
         }
         
+    }
+    if(num_funcionarios != num_aeronaves)
+    {
+    	*erros[*erro_count] = 321;
+        *erro_count++;
     }
     
 }
