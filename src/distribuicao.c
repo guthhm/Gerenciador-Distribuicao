@@ -20,6 +20,10 @@ de uma empresa fictícia e exibir esta distribuição de forma gráfica no termi
 #define version 0.02
 #define YES 1
 #define NO 0
+#define VAZIO 0
+#define OK 1
+#define ADJACENTE 2
+#define SOZINHO 3
 #define WRITE_INFO_LINE 0
 #define APPEND 1
 
@@ -47,6 +51,7 @@ void ResultWriter (int open_mode, int status_code[5], char file_to_open[23], int
             }
             if (status_code[i] == 100){
                 fprintf(result_file, "OK ", session_ID);
+                printf("\nA execucao do ficheiro foi um sucesso.\n");
                 break;
             }
             
@@ -107,14 +112,48 @@ void ResultWriter (int open_mode, int status_code[5], char file_to_open[23], int
     fclose(result_file);
 }
 
+void DistValidator (int *validacao[7][7], char dist[7][7], int *erros[5], int *erro_count) {
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            if (dist[i][j] == 'V')
+            {
+                if (dist[i-1][j] == '*' || dist[i][j-1] == '*' || dist[i][j+1] == '*' || dist[i+1][j] == '*')
+                {
+                    *validacao[i][j] == OK;
+                } else
+                {
+                    *validacao[i][j] = SOZINHO;
+                    *erros[*erro_count] = 312;
+                    *erro_count++;
+                    printf("\n%d %d\n", i, j);
+                }
+                
+                
+            } else if (dist[i][j] == '*')
+            {
+                /* code */
+            } else
+            {
+                *validacao[i][j] = VAZIO;
+            }
+            
+            
+            
+            
+        }
+        
+    }
+    
+}
+
 void TablePrinter (char matriz_dist[7][7]) {
 
     printf("   0  1  2  3  4  5  6  7\n");
     for (int i = 0; i < 8; i++) {
         printf("%d ", i);
         for (int j = 0; j < 8; j++) {
-            if (matriz_dist[i][j] != 'V' && matriz_dist[i][j] != '*')            
-                matriz_dist[i][j] = '.';
             printf(" %c ", matriz_dist[i][j]);
         }    
         printf("\n");    
@@ -124,8 +163,8 @@ void TablePrinter (char matriz_dist[7][7]) {
 
 int main (void) {
 
-    int x = 0, y = 0, k = 0, funcionario = 0, aeronave = 0, valor = 0, status_count = 0, error_flag = 0, line_count = 0, status_code[5] = {0}, aux = 0;
-    char matriz_dist[7][7] = {0}, linha[10], ocupante, file_list[20][20] = {0}, user_input[20] = {0}, file_to_open[23];
+    int x = 0, y = 0, k = 0, funcionario = 0, aeronave = 0, valor = 0, status_count = 0, error_flag = 0, line_count = 0, status_code[5] = {0}, aux = 0, matriz_validacao[7][7] = {0};
+    char matriz_dist[7][7] = {NULL}, linha[10], ocupante, file_list[20][20] = {0}, user_input[20] = {0}, file_to_open[23];
     FILE *primary_dist_file, *dist_file;
 
     srand(time(NULL));
@@ -253,8 +292,10 @@ int main (void) {
                 status_code[status_count] = 304;
                 status_count++;
             }
-            if (x <= 7 && x >=0 && y <= 7 && y >= 0)
+            if (x <= 7 && x >=0 && y <= 7 && y >= 0){
                 matriz_dist[x][y] = ocupante;
+                //printf("\nTeste\n");
+            }
         
             line_count++;
 
@@ -302,7 +343,15 @@ int main (void) {
 
     } while (error_flag != NO);
 
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (matriz_dist[i][j] != 'V' && matriz_dist[i][j] != '*')            
+                matriz_dist[i][j] = '.';
+        }    
+    }
+
     printf("\n\n");
+    DistValidator(&matriz_validacao, matriz_dist, &status_code, &status_count);
     TablePrinter(matriz_dist);
 
     return 0;
