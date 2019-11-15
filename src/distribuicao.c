@@ -14,6 +14,7 @@ de uma empresa fictícia e exibir esta distribuição de forma gráfica no termi
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "validator.h"
 
 /*---------- Definições gerais ----------*/
 
@@ -111,39 +112,6 @@ void ResultWriter (int open_mode, int status_code[5], char file_to_open[23], int
     }
 
     fclose(result_file);
-}
-
-void DistValidator (int *validacao[7][7], char dist[7][7], int *erros[5], int *erro_count) {
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; j < 8; j++)
-        {
-            if (dist[i][j] == 'V')
-            {
-                if (dist[i-1][j] == '*' || dist[i][j-1] == '*' || dist[i][j+1] == '*' || dist[i+1][j] == '*')
-                {
-                    *validacao[i][j] == OK;
-                } else
-                {
-                    *validacao[i][j] = SOZINHO;
-                    *erros[*erro_count] = 312;
-                    *erro_count++;
-                    printf("\n%d %d\n", i, j);
-                }
-                
-                
-            } else if (dist[i][j] == '*')
-            {
-                /* code */
-            } else
-            {
-                *validacao[i][j] = VAZIO;
-            }
-            
-        }
-        
-    }
-    
 }
 
 void TablePrinter (char matriz_dist[7][7]) {
@@ -351,7 +319,7 @@ int main (void) {
     }
 
     printf("\n\n");
-    DistValidator(&matriz_validacao, matriz_dist, &status_code, &status_count);
+    DoValidation(&matriz_validacao, matriz_dist, &status_code, &status_count);
     TablePrinter(matriz_dist);
 
     return 0;
