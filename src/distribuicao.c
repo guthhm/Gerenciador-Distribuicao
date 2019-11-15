@@ -18,7 +18,7 @@ de uma empresa fictícia e exibir esta distribuição de forma gráfica no termi
 
 /*---------- Definições gerais ----------*/
 
-#define version 1.00
+#define version 1.01
 #define YES 1
 #define NO 0
 #define VAZIO 0
