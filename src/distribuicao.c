@@ -1,5 +1,5 @@
 /*=====================================================================================================================
-Gerenciador de distribuição (@version) v0.01;
+Gerenciador de distribuição (@version) v1.00;
 Created by (@author): Gustavo Martins e Braulindo Moreira;
 Número IST: 91632  e  94325;
 Curso: Mestrado Integrado em Engenharia Eletrotécnica e de Computadores (MEEC);
@@ -17,7 +17,7 @@ de uma empresa fictícia e exibir esta distribuição de forma gráfica no termi
 
 /*---------- Definições gerais ----------*/
 
-#define version 0.02
+#define version 1.00
 #define YES 1
 #define NO 0
 #define VAZIO 0
@@ -58,6 +58,7 @@ void ResultWriter (int open_mode, int status_code[5], char file_to_open[23], int
             if (i == 5)
                 fprintf(result_file, "AVISO ", session_ID);
         }
+
         fprintf(result_file, "Funcionarios: %d Aeronaves: %d\n", func, aero);
 
         for (int i = 0; i < 6; i++)
@@ -139,9 +140,6 @@ void DistValidator (int *validacao[7][7], char dist[7][7], int *erros[5], int *e
                 *validacao[i][j] = VAZIO;
             }
             
-            
-            
-            
         }
         
     }
@@ -159,6 +157,7 @@ void TablePrinter (char matriz_dist[7][7]) {
         printf("\n");    
     }
     printf("\n");
+
 }
 
 int main (void) {
@@ -197,6 +196,7 @@ int main (void) {
         }
 
         fclose (primary_dist_file);
+
     }
 
     printf("\n\tBem-vindo ao gerenciador de distribuicao versao %g. \n\n", version);
