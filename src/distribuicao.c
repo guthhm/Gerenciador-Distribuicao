@@ -94,6 +94,10 @@ void ResultWriter (int open_mode, int status_code[5], char file_to_open[23], int
                 fprintf(result_file, "\tStatus %d - O número de funcionários e aeronaves não é o mesmo.\n", status_code[i]);
                 break;
 
+            case 331:
+                fprintf(result_file, "\tStatus %d - Pelo menos uma aeronave não tem funcionario atribuido.\n", status_code[i]);
+                break;
+
             default:
                 break;
             }
